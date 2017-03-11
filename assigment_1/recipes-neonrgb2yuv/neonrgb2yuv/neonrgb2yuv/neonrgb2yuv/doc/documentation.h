@@ -9,7 +9,7 @@
  * 
  * Usage: 
  *
- *		intrinsicrgb2yuv -i <source_image> -o <output_image> 
+ *		neonrgb2yuv -i <source_image> -o <output_image> 
  *
  *		-i source_image  	specify the RGB input image to convert to yuv
  *
@@ -23,11 +23,10 @@
  *		2. void print_autor();
  *		3. void print_help();
  *		4. unsigned char *open_image(char *src_file, int x, int y, int z);
- *
- *              The time required to convert the image from rgb to yuv using intrinsic is: 156902 us.
- *              It is better compared with rgb2yuv using C (338000 us) but it is not as faster as the asm neon (138085 us).
- *
- *
+ *                
+ *              The time required to convert the image from rgb to yuv using neon in asm is: 138085 us.
+ *              It is the faster compared with rgb2yuv using C (338000 us) and intrinsic (156902 us).
+ * 
  * @subsection Example Example 
  * Example input image:
  * @image html image.rgb

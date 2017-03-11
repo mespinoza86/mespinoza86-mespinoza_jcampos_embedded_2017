@@ -2,14 +2,13 @@
  * @file documentation.h
  * @authors Marco Espinoza/
  *			Jose Campos/
- * @brief Assignment 1: Meta-Tec with RGB2YUV with neon but using C! 
+ * @brief Assignment 1: Meta-Tec with RGB2YUV with C compilation! 
  * @section USAGE
- * This program receive an rgb image as argument and it will convert the image to yuv using neon in C.
- * It will allow to do the image conversion using special asm instruction for the ARM architecture.  
+ * This program receive an rgb image as argument and it will convert the image to yuv using C methods. 
  * 
  * Usage: 
  *
- *		intrinsicrgb2yuv -i <source_image> -o <output_image> 
+ *		rgb2yuv -i <source_image> -o <output_image> 
  *
  *		-i source_image  	specify the RGB input image to convert to yuv
  *
@@ -23,9 +22,10 @@
  *		2. void print_autor();
  *		3. void print_help();
  *		4. unsigned char *open_image(char *src_file, int x, int y, int z);
+ *              
  *
- *              The time required to convert the image from rgb to yuv using intrinsic is: 156902 us.
- *              It is better compared with rgb2yuv using C (338000 us) but it is not as faster as the asm neon (138085 us).
+ *              The time required to convert the image from rgb to yuv using C is: 338000 us.
+ *              It is the slowest compared with intrinsic (156902 us) and neon asm (138085 us).
  *
  *
  * @subsection Example Example 
