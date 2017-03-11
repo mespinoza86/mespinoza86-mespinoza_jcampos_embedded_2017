@@ -45,6 +45,26 @@ The explanation for each of the recipe developed is:
                 It was measured the time expended by this program to do the image conversion
                 and it was: 138085 us for a image.rgb.
 
+To execute the binary files generated belonging to each recipe, the command line required is the following:
+
+rgb2yuv C version:
+
+The binary file is rgb2yuv_c:
+Command line: rgb2yuv_c -i <rgg image> -o <output image>
+The program will generate a yuv image with the name specified in the -o argument.
+
+intrinsic rgb2yuv version:
+
+The binary file is intrinsicrgb2yuv:
+Command line: intrinsicrgb2yuv_c -i <rgg image> -o <output image>
+The program will generate a yuv image with the name specified in the -o argument.
+
+neon rgb2yuv version:
+
+The binary file is neonrgb2yuv:
+Command line: neonrgb2yuv_c -i <rgg image> -o <output image>
+The program will generate a yuv image with the name specified in the -o argument.
+
 Conclusions:
  
 * It was possible to developed 3 programs to do the image conversion from rgb to yuv, 
