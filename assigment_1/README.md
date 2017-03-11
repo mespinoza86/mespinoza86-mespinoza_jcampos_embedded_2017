@@ -50,19 +50,25 @@ To execute the binary files generated belonging to each recipe, the command line
 rgb2yuv C version:
 
 The binary file is rgb2yuv_c:
+
 Command line: rgb2yuv_c -i <rgg image> -o <output image>
+
 The program will generate a yuv image with the name specified in the -o argument.
 
 intrinsic rgb2yuv version:
 
 The binary file is intrinsicrgb2yuv:
+
 Command line: intrinsicrgb2yuv_c -i <rgg image> -o <output image>
+
 The program will generate a yuv image with the name specified in the -o argument.
 
 neon rgb2yuv version:
 
 The binary file is neonrgb2yuv:
+
 Command line: neonrgb2yuv_c -i <rgg image> -o <output image>
+
 The program will generate a yuv image with the name specified in the -o argument.
 
 Conclusions:
