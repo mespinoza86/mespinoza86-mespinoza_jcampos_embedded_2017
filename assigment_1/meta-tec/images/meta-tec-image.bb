@@ -108,6 +108,9 @@ IMAGE_INSTALL += " \
     ${EXTRA_TOOLS_INSTALL} \
     ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
+    rgb2yuv \
+    intrinsicrgb2yuv \
+    neonrgb2yuv \
 "
 
 
