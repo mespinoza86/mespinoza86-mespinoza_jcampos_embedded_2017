@@ -14,12 +14,6 @@
 //#define PNGSUITE_PRIMARY
 
 void run_kernel (char *srcfile, char *outfile, int _kernel);
-void kernel_left_sobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
-void kernel_identity (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
-void kernel_outline (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
-void kernel_blur (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
-void kernel_sharpen (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
-void kernel_topsobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]);
 void print_autor();
 void print_help();
 
@@ -128,7 +122,6 @@ void run_kernel (char *srcfile, char *outfile, int _kernel){
 
 	uint8 c_image[h][w][depth];
 
-#pragma omp parallel for
 
 	for (int row = 0; row < h; row++) {
 		for (int col = 0; col < w; col++) {
@@ -139,8 +132,7 @@ void run_kernel (char *srcfile, char *outfile, int _kernel){
 		}
 	}
 
-#pragma omp parallel for
-
+/*
 	for (int row = 0; row < h; row++) {
 		for (int col = 0; col < w; col++) {
 			for (int z = 0; z < depth; z++) {
@@ -176,7 +168,7 @@ void run_kernel (char *srcfile, char *outfile, int _kernel){
 			}
 		}
 	}
-	
+*/	
 	if (strstr(srcfile,".bmp")){
 		printf("-Info- Storing the image as bmp\n");
 		stbi_write_bmp(outfile,w,h,depth,result);
@@ -200,50 +192,6 @@ void run_kernel (char *srcfile, char *outfile, int _kernel){
 	}
 
 	
-}
-
-void kernel_left_sobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*1 + c_image[row-1][col][z]*0 + c_image[row-1][col+1][z]*-1 + 
-						c_image[row]  [col-1][z]*2 + c_image[row]  [col][z]*0  + c_image[row]  [col+1][z]*-2 + 
-						c_image[row+1][col-1][z]*1 + c_image[row+1][col][z]*0 + c_image[row+1][col+1][z]*-1);
-}
-
-void kernel_identity (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*0 + c_image[row-1][col][z]*0 + c_image[row-1][col+1][z]*0 + 
-						c_image[row]  [col-1][z]*0 + c_image[row]  [col][z]*1  + c_image[row]  [col+1][z]*0 + 
-						c_image[row+1][col-1][z]*0 + c_image[row+1][col][z]*0 + c_image[row+1][col+1][z]*0);
-}
-
-void kernel_outline (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*-1 + c_image[row-1][col][z]*-1 + c_image[row-1][col+1][z]*-1 + 
-						c_image[row]  [col-1][z]*-1 + c_image[row]  [col][z]*8  + c_image[row]  [col+1][z]*-1 + 
-						c_image[row+1][col-1][z]*-1 + c_image[row+1][col][z]*-1 + c_image[row+1][col+1][z]*-1);
-}
-
-void kernel_blur (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*0.0625 + c_image[row-1][col][z]*0.125 + c_image[row-1][col+1][z]*0.0625 + 
-						c_image[row]  [col-1][z]*0.125 + c_image[row]  [col][z]*0.25  + c_image[row]  [col+1][z]*0.125 + 
-						c_image[row+1][col-1][z]*0.0625 + c_image[row+1][col][z]*0.125 + c_image[row+1][col+1][z]*0.0625);
-}
-
-void kernel_sharpen (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*0 + c_image[row-1][col][z]*-1 + c_image[row-1][col+1][z]*0 + 
-						c_image[row]  [col-1][z]*-1 + c_image[row]  [col][z]*5  + c_image[row]  [col+1][z]*-1 + 
-						c_image[row+1][col-1][z]*0 + c_image[row+1][col][z]*-1 + c_image[row+1][col+1][z]*0);
-}
-
-void kernel_topsobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
-						c_image[row-1][col-1][z]*1 + c_image[row-1][col][z]*2 + c_image[row-1][col+1][z]*1 + 
-						c_image[row]  [col-1][z]*0 + c_image[row]  [col][z]*0  + c_image[row]  [col+1][z]*0 + 
-						c_image[row+1][col-1][z]*-1 + c_image[row+1][col][z]*-2 + c_image[row+1][col+1][z]*-1);
 }
 
 //This method will print the autors information
