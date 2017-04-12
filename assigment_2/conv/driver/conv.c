@@ -19,89 +19,101 @@
 #define depth  3   //1
 
 
-unsigned char image [height*width*depth];
-unsigned char *result;
+unsigned char image  [height*width*depth];
+unsigned char result [height*width*depth];
 int kernel;
 unsigned char c_image [height][width][depth];
 
-
-void kernel_method(int x, int d, int y){
-	printk(KERN_ALERT "Inside the %s function\n", __FUNCTION__);
-//	unsigned char c_image [height][width][depth];
-	int row, col,z;
-	for (row = 0; row < height; row++) {
-		for (col = 0; col < width; col++) {
-			for (z = 0; z < depth; z++) {
-//				printk(KERN_ALERT "Before to start\n");
-				c_image[row][col][z] = image[(row * width + col) * depth + z];
-			//	result[(row * width + col) * depth + z] = -1;
-				printk(KERN_INFO "Info row %d col %d x %d image val %u\n",row,col,z,  image[(row * width + col) * depth + z]);
-
-			}
-		}
-	}
-	
-	printk(KERN_INFO "Info image val %u\n", image[100]);
-	printk(KERN_INFO "Info image val %u\n", image[1000]);
-	printk(KERN_INFO "Info image val %u\n", image[10000]);
-	printk(KERN_INFO "Info image val %u\n", image[2000]);
-	printk(KERN_INFO "Info image val %u\n", image[600]);
-	printk(KERN_INFO "Info image val %u\n", image[1300]);
-	printk(KERN_INFO "Info image val %u\n", image[9120]);
-	printk(KERN_INFO "Info image val %u\n", image[8400]);
-	printk(KERN_INFO "Info image val %u\n", image[7430]);
-	printk(KERN_INFO "Info image val %u\n", image[61240]);
-	printk(KERN_INFO "Info image val %u\n", image[50230]);
-	printk(KERN_INFO "Info image val %u\n", image[4330]);
-
-
-}
-
-/*
-void kernel_left_sobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-
-	_proc_image[(row * w + col) * depth + z] = (
+void kernel_left_sobel (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*1 + c_image[row-1][col][z]*0 + c_image[row-1][col+1][z]*-1 + 
 						c_image[row]  [col-1][z]*2 + c_image[row]  [col][z]*0  + c_image[row]  [col+1][z]*-2 + 
 						c_image[row+1][col-1][z]*1 + c_image[row+1][col][z]*0 + c_image[row+1][col+1][z]*-1);
 }
 
-void kernel_identity (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-
-	_proc_image[(row * w + col) * depth + z] = (
+void kernel_identity (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*0 + c_image[row-1][col][z]*0 + c_image[row-1][col+1][z]*0 + 
 						c_image[row]  [col-1][z]*0 + c_image[row]  [col][z]*1  + c_image[row]  [col+1][z]*0 + 
 						c_image[row+1][col-1][z]*0 + c_image[row+1][col][z]*0 + c_image[row+1][col+1][z]*0);
 }
 
-void kernel_outline (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
+void kernel_outline (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*-1 + c_image[row-1][col][z]*-1 + c_image[row-1][col+1][z]*-1 + 
 						c_image[row]  [col-1][z]*-1 + c_image[row]  [col][z]*8  + c_image[row]  [col+1][z]*-1 + 
 						c_image[row+1][col-1][z]*-1 + c_image[row+1][col][z]*-1 + c_image[row+1][col+1][z]*-1);
 }
 
-void kernel_blur (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
+/*
+void kernel_blur (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*0.0625 + c_image[row-1][col][z]*0.125 + c_image[row-1][col+1][z]*0.0625 + 
 						c_image[row]  [col-1][z]*0.125 + c_image[row]  [col][z]*0.25  + c_image[row]  [col+1][z]*0.125 + 
 						c_image[row+1][col-1][z]*0.0625 + c_image[row+1][col][z]*0.125 + c_image[row+1][col+1][z]*0.0625);
 }
-
-void kernel_sharpen (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
+*/
+void kernel_sharpen (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*0 + c_image[row-1][col][z]*-1 + c_image[row-1][col+1][z]*0 + 
 						c_image[row]  [col-1][z]*-1 + c_image[row]  [col][z]*5  + c_image[row]  [col+1][z]*-1 + 
 						c_image[row+1][col-1][z]*0 + c_image[row+1][col][z]*-1 + c_image[row+1][col+1][z]*0);
 }
 
-void kernel_topsobel (uint8 *_proc_image, int h, int row, int w, int col, int depth, int z, uint8 c_image[h][w][depth]){
-	_proc_image[(row * w + col) * depth + z] = (
+void kernel_topsobel (int row, int col, int z){
+	result[(row * width + col) * depth + z] = (
 						c_image[row-1][col-1][z]*1 + c_image[row-1][col][z]*2 + c_image[row-1][col+1][z]*1 + 
 						c_image[row]  [col-1][z]*0 + c_image[row]  [col][z]*0  + c_image[row]  [col+1][z]*0 + 
 						c_image[row+1][col-1][z]*-1 + c_image[row+1][col][z]*-2 + c_image[row+1][col+1][z]*-1);
 }
-*/
+
+
+void kernel_method(int x, int d, int y){
+	int row, col,z;
+	for (row = 0; row < height; row++) {
+		for (col = 0; col < width; col++) {
+			for (z = 0; z < depth; z++) {
+				c_image[row][col][z] = image[(row * width + col) * depth + z];
+				result[(row * width + col) * depth + z] = -1;
+			}
+		}
+	}
+
+	for (row = 0; row < height; row++) {
+		for (col = 0; col < width; col++) {
+			for (z = 0; z < depth; z++) {
+
+				switch (kernel) {
+					case 1:
+						kernel_left_sobel(row, col, z);	
+					break;
+					
+					case 2:
+						kernel_identity(row, col, z);						
+					break;			
+				
+					case 3:
+						kernel_outline(row, col, z);		
+					break;
+	
+					case 4:
+						kernel_sharpen(row, col, z);		
+					break;
+
+					case 5:
+						kernel_topsobel(row, col, z);		
+					break;	
+					default:
+						printk(KERN_INFO"-Error- Kernel %i is not found, exiting from the program ....\n", kernel);
+				}
+			}
+		}
+	}
+
+}
+
+
+
 static int Device_Open = 0;
 
 static int device_open(struct inode *inode, struct file *file){
@@ -124,7 +136,7 @@ static int device_release(struct inode *inode, struct file *file)
 	return SUCCESS;
 }
 
-static ssize_t device_write(struct file *file, unsigned char __user * buffer, size_t length, loff_t * offset)
+static ssize_t device_write(struct file *file, char __user * buffer, size_t length, loff_t * offset)
 {
 	int i=0;
  	printk(KERN_INFO "Writting image into device \n");
@@ -142,7 +154,7 @@ static ssize_t device_read(struct file *file, char __user * buffer, size_t lengt
 	int i=0;
 	printk(KERN_INFO "Reading image stored in the device \n");
 	printk(KERN_ALERT "Inside the %s function\n", __FUNCTION__);
-	i = copy_to_user(buffer, image, length);
+	i = copy_to_user(buffer, result, length);
 	printk(KERN_INFO "value read from copy is %d\n", i);
 	return i;
 
@@ -159,8 +171,6 @@ int device_ioctl(//struct inode *inode,	/* see include/linux/fs.h */
 	/* 
 	 * Switch according to the ioctl called 
 	 */
-		printk(KERN_INFO "IOCTL called with operation number:  %d\n", ioctl_num);
-
 	switch (ioctl_num) {
 	case IOCTL_SET_MODE:
 		kernel = (int)ioctl_param;

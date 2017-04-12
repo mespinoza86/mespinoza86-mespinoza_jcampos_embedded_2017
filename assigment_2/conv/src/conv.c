@@ -24,6 +24,7 @@ int open_device();
 void ioctl_set_mode(int file_desc, int value);
 void read_image(int file_desc, char *outfile);
 int w,h, depth;
+	uint8 *org_image;
 
 int main(int argc, char **argv)
 {
@@ -109,7 +110,6 @@ and set the proper variables in order to execute the required methods
 
 	file =open_device();
 	write_image(src_image, file);
-	file =open_device();
 	ioctl_set_mode(file, kernel);
 	ioctl_start_mode(file);
 	read_image(file, out_image);
@@ -175,101 +175,13 @@ void read_image (int file_desc, char *outfile){
 
 void write_image (char *srcfile, int file_desc){
 
-	uint8 *org_image;
+//	uint8 *org_image;
 	int *x; int *y; int req_comp;
 //	char tu[5]="A1223";
 	org_image = stbi_load(srcfile, &w, &h, &depth, req_comp);
-	printf("------- Image Information -----------\n");
-	printf("-I- Src Image width     %i\n", w);	
-	printf("-I- Src Image height    %i\n", h);	
-	printf("-I- Src Image depth     %i\n", depth);
 	int image_size = w*h*depth;
-	
 	write(file_desc, org_image, image_size);
-	close(file_desc);
 //	write(file_desc, tu, sizeof(char));
-
-/*	result = stbi_load(srcfile, &w, &h, &depth, req_comp);
-
-	uint8 temp_c_image[h][w][3];
-	
-	printf("------- Image Information -----------\n");
-	printf("-I- Src Image width     %i\n", w);	
-	printf("-I- Src Image height    %i\n", h);	
-	printf("-I- Src Image depth     %i\n", depth);		
-
-	uint8 c_image[h][w][depth];
-
-
-	for (int row = 0; row < h; row++) {
-		for (int col = 0; col < w; col++) {
-			for (int z = 0; z < depth; z++) {
-				c_image[row][col][z] = org_image[(row * w + col) * depth + z];
-				result[(row * w + col) * depth + z] = -1;
-			}
-		}
-	}
-*/
-/*
-	for (int row = 0; row < h; row++) {
-		for (int col = 0; col < w; col++) {
-			for (int z = 0; z < depth; z++) {
-
-				switch (_kernel) {
-					case 1:
-						kernel_left_sobel(result, h, row, w, col, depth, z, c_image);	
-					break;
-					
-					case 2:
-						kernel_identity(result, h, row, w, col, depth, z, c_image);							
-					break;			
-				
-					case 3:
-						kernel_outline(result, h, row, w, col, depth, z, c_image);		
-					break;
-	
-					case 4:
-						kernel_blur(result, h, row, w, col, depth, z, c_image);		
-					break;
-
-					case 5:
-						kernel_sharpen(result, h, row, w, col, depth, z, c_image);		
-					break;
-
-					case 6:
-						kernel_topsobel(result, h, row, w, col, depth, z, c_image);		
-					break;	
-					default:
-						printf("-Error- Kernel %i is not found, exiting from the program ....\n", _kernel);
-						exit(0);
-				}
-			}
-		}
-	}
-*/	
-/*	if (strstr(srcfile,".bmp")){
-		printf("-Info- Storing the image as bmp\n");
-		stbi_write_bmp(outfile,w,h,depth,result);
-		printf("-Info- Image was stored as %s\n", outfile); 
-	}else if(strstr(srcfile,".png") != NULL){
-		printf("-Info- Storing the image as png\n");
-		stbi_write_png(outfile,w,h,depth,result, w*3);
-		printf("-Info- Image was stored as %s\n", outfile);
-	}else if(strstr(srcfile,".tga") != NULL){
-		printf("-Info- Storing the image as tga\n");
-     		stbi_write_tga(outfile,w,h,depth,result);
-		printf("-Info- Image was stored as %s\n", outfile);
-	}else if(strstr(srcfile,".jpg") != NULL){
-		printf("-Warning- Input file has jpg format but it will be stored as bmp\n");
-		stbi_write_bmp(outfile,w,h,depth,result);
-		printf("-Info- Image was stored as %s\n", outfile); 
-
-	}else{
-		printf("-Error-The image format added is not supported by the program\n-Error- Format compatible are: jpg/png/bmp/tga\n-Error- Exiting ....\n");
-		exit(0);
-	}
-*/
-	
 }
 
 //This method will print the autors information
