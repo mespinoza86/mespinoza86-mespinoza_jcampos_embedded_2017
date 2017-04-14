@@ -23,8 +23,10 @@ void print_help();
 int open_device();
 void ioctl_set_mode(int file_desc, int value);
 void read_image(int file_desc, char *outfile);
-int w,h, depth;
-	uint8 *org_image;
+int w = 512;
+int h = 512;
+int depth = 3;
+uint8 *org_image;
 
 int main(int argc, char **argv)
 {
@@ -36,7 +38,7 @@ int main(int argc, char **argv)
 	int file;
 
 //This while is used to read the arguments added to through the command line to the application
-	while ((c = getopt (argc, argv, "i:o:k:ha")) != -1){
+	while ((c = getopt (argc, argv, "i:o:m:ha")) != -1){
 /*
 The following switch will identify the arguments read, and it will call the proper method
 and set the proper variables in order to execute the required methods
@@ -59,7 +61,7 @@ and set the proper variables in order to execute the required methods
 			//'w' has the address which will be monitored during the test execution
 				out_image = optarg;
 				break;
-			case 'k':
+			case 'm':
 			//'s' will execute the binary file step by step
 				kernel = atoi(optarg);
 				break;
@@ -78,41 +80,34 @@ and set the proper variables in order to execute the required methods
 			}
 	}
 
-	/*
-	-i argument is required for the program to apply the kernel to the src image. 
-	-o argument is required for the program to store the result from the convolution between the src image and the kernel selected.
-	-k argument is required for the program to know the kernel to apply. 
-	If one of those arguments is not added, the program will fail due to there is not a required argument to have the result succesfully. 
-	The following "if" will check if those argument were added in the command line, and if one of the 
-	argument was not added, the program will fail.	
-	*/
-
-	if(src_image==NULL){
-		fprintf(stderr, "-Error- Argument -i <source_image> is required\n-Error- Use -h to see the help menu\n");
+	if(src_image == NULL && out_image == NULL){
+		fprintf(stderr, "-Error- Argument -i <source_image> or Argument -o <output_image> is required\n-Error- Use -h to see the help menu\n");
 		exit(0);
-	}else{
-		fprintf(stderr, "-Info- Convolution program will use the image %s as the source image\n", src_image);
+	}else if(src_image != NULL){
+		if(!access(src_image, F_OK)){
+			fprintf(stderr, "-Info- Convolution program will use the image %s as the source image\n", src_image);
+		}else{
+			fprintf(stderr, "-Error- Argument -i <source_image> must exist\n-Error- Use -h to see the help menu\n");
+			exit(0);
+		}
+	}
+	
+	if(out_image != NULL){
+		fprintf(stderr, "-Info- Convolution program will use the image %s as the output image\n", out_image);
 	}
 
-	if(out_image==NULL){
-		fprintf(stderr, "-Error- Argument -o <output_image> is required\n-Error- Use -h to see the help menu\n");
-		exit(0);
-	}else{
-		fprintf(stderr, "-Info- Convolution program will store the image resultant in the file %s\n", out_image);
-	}
-
-	if(kernel==-1){
-		fprintf(stderr, "-Error- Argument -k <kernel desired> is required\n-Error- Use -h to see the help menu\n");
+	if(kernel <= 0 || kernel >= 6){
+		fprintf(stderr, "-Error- Argument -m <kernel desired> is required, and must be set to a valid value\n-Error- Use -h to see the help menu\n");
 		exit(0);
 	}else{
 		fprintf(stderr, "-Info- Convolution program will apply the kernel number %i to the src image\n", kernel);
 	}
 
-	file =open_device();
-	write_image(src_image, file);
+	file = open_device();
+	if(src_image != NULL)	write_image(src_image, file);
 	ioctl_set_mode(file, kernel);
 	ioctl_start_mode(file);
-	read_image(file, out_image);
+	if(out_image != NULL)	read_image(file, out_image);
 
 //	run_kernel(src_image, out_image, kernel);
 
@@ -163,6 +158,10 @@ void read_image (int file_desc, char *outfile){
 	result = (uint8 *) malloc(sizeof(uint8)*image_size);
 	memset( result, 0, image_size);
 	read(file_desc, result, image_size);
+//	for(int i = 0 ; i < image_size ; i++)
+//	{
+//		printf("app-jecampos %x\n",result[i]);
+//	}
 	printf("------- Image Information -----------\n");
 	printf("-I- Src Image width     %i\n", w);	
 	printf("-I- Src Image height    %i\n", h);	
@@ -191,7 +190,6 @@ void print_autor(){
 	printf("#############################################\n");
 	printf("# Autores: Marco Espinoza Murillo           #\n");
 	printf("#          Jose Campos Murillo              #\n");
-	printf("#	   Freddy Zeledon Jarquin           #\n");
 	printf("# Maestria Sistemas Embebidos               #\n");
 	printf("# Instituo Tecnologico de Costa Rica        #\n");
 	printf("#############################################\n");
@@ -209,20 +207,19 @@ void print_help(){
 	printf("#   -a: It shows the program autor information                                     #\n");
 	printf("#   -h: It shows this help menu                                                    #\n");
 	printf("#   -i: It receive the source image to apply the kernel                            #\n");
-	printf("#   -k: It is the kernel to apply to the image, one of the follows can be applied: #\n");
+	printf("#   -m: It is the kernel to apply to the image, one of the follows can be applied: #\n");
 	printf("#            1: kernel_left_sobel                                                  #\n");
 	printf("#            2: kernel_identity                                                    #\n");
 	printf("#            3: kernel_outline                                                     #\n");
-	printf("#            4: kernel_blur                                                        #\n");
-	printf("#            5: kernel_sharpen                                                     #\n");
-	printf("#            6: kernel_topsobel                                                    #\n");
+	printf("#            4: kernel_sharpen                                                     #\n");
+	printf("#            5: kernel_topsobel                                                    #\n");
 	printf("#   -o: It receive the name for the output image with the kernel applied           #\n");
 	printf("#                                                                                  #\n");
 	printf("# Command line examples                                                            #\n");
-	printf("#  ./conv -i foto1.jpg   -o result.bmp -k 5                                        #\n");
-	printf("#  ./conv -i foto2.jpg   -o result.bmp -k 2                                        #\n");
-	printf("#  ./conv -i foto3.bmp   -o result.bmp -k 6                                        #\n");
-	printf("#  ./conv -i lena512.bmp -o result.bmp -k 3                                        #\n");
+	printf("#  ./conv -i foto1.jpg   -o result.bmp -m 5                                        #\n");
+	printf("#  ./conv -i foto2.jpg   -o result.bmp -m 2                                        #\n");
+	printf("#  ./conv -i foto3.bmp   -o result.bmp -m 6                                        #\n");
+	printf("#  ./conv -i lena512.bmp -o result.bmp -m 3                                        #\n");
 	printf("####################################################################################\n");
 	exit(0);
 	
