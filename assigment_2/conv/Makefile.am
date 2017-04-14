@@ -1,1 +1,1 @@
-SUBDIRS =  src driver
+SUBDIRS =  src
