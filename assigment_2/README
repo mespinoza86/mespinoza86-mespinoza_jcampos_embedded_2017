@@ -1,0 +1,53 @@
+Yocto
+
+The recipes with the app and the driver are stored in the path:
+recipes-app
+recipes-kernel
+
+It is required to copy those recipes in the folder meta-tec.
+When the recipes-app and recipes-kernel are stored in the meta-tec folder you can compile the Yocto using:
+
+bitbake meta-tec-image
+
+It will create the Yocto image required.
+
+Convolution tool
+
+Description: 
+Convolution tool is used to apply different kernels to an image.
+This application will use a driver to do a convolution operation. 
+
+You need to run the script gen_conv.sh stored in the /usr/ path to have the driver required set.
+
+Execution
+conv can be executed from the /home/root path.
+The sample image is stored in the path /usr/lena512.bmp
+The script gen_conv.sh is stored in the path /usr/gen_conv.sh
+
+The instructions to execute the app are the following:
+
+	Usage: ./conv [OPTIONS]
+		Where OPTIONS are:
+           -a: It shows the program autor information                                     \n");
+	   -h: It shows this help menu                                                    
+	   -i: It receive the source image to apply the kernel                            
+	   -k: It is the kernel to apply to the image, one of the follows can be applied: 
+	            1: kernel_left_sobel                                                  
+	            2: kernel_identity                                                    
+	            3: kernel_outline                                                     
+	            4: kernel_sharpen                                                     
+	            5: kernel_topsobel                                                    
+	   -o: It receive the name for the output image with the kernel applied           
+	                                                                                  
+Command line examples:
+	Before to execute the application, it is required to set the driver.
+	It is required to source the file gen_conv.sh:
+	
+	source /usr/gen_conv.sh
+	
+	It will set the driver required to execute the app and make the convolution sucessfully. 
+	In the /usr/ folder there is an image called lena512.bmp which can be used to validate the program. 
+	  ./conv -i lena512.bmp -o result.bmp -m 1                                       
+	  ./conv -i lena512.bmp -o result.bmp -m 2                                        
+	  ./conv -i lena512.bmp -o result.bmp -m 3                                       
+	  ./conv -i lena512.bmp -o result.bmp -m 4           
