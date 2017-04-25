@@ -1,0 +1,60 @@
+Loading image: image.gray
+
+ Performance counter stats for './main image.gray 1280 720':
+
+          5,117079      task-clock (msec)         #    0,090 CPUs utilized          
+        13 173 982      cycles                    #    2,575 GHz                    
+        24 687 156      instructions              #    1,87  insns per cycle        
+           258 039      cache-references          #   50,427 M/sec                  
+           122 711      cache-misses              #   47,555 % of all cache refs    
+
+       0,057019547 seconds time elapsed
+
+Loading image: image.gray
+
+ Performance counter stats for './main image.gray 1280 720':
+
+          4,254584      task-clock (msec)         #    0,935 CPUs utilized          
+        12 371 551      cycles                    #    2,908 GHz                    
+        24 591 174      instructions              #    1,99  insns per cycle        
+           206 147      cache-references          #   48,453 M/sec                  
+            59 734      cache-misses              #   28,976 % of all cache refs    
+
+       0,004549052 seconds time elapsed
+
+Loading image: image.gray
+
+ Performance counter stats for './main image.gray 1280 720':
+
+          4,425189      task-clock (msec)         #    0,123 CPUs utilized          
+        12 422 663      cycles                    #    2,807 GHz                    
+        24 580 902      instructions              #    1,98  insns per cycle        
+           212 715      cache-references          #   48,069 M/sec                  
+            79 864      cache-misses              #   37,545 % of all cache refs    
+
+       0,035832239 seconds time elapsed
+
+Loading image: image.gray
+
+ Performance counter stats for './main image.gray 1280 720':
+
+          4,803294      task-clock (msec)         #    0,268 CPUs utilized          
+        13 089 132      cycles                    #    2,725 GHz                    
+        24 571 754      instructions              #    1,88  insns per cycle        
+           237 982      cache-references          #   49,546 M/sec                  
+            85 326      cache-misses              #   35,854 % of all cache refs    
+
+       0,017950763 seconds time elapsed
+
+Loading image: image.gray
+
+ Performance counter stats for './main image.gray 1280 720':
+
+          4,450411      task-clock (msec)         #    0,206 CPUs utilized          
+        12 696 407      cycles                    #    2,853 GHz                    
+        24 502 248      instructions              #    1,93  insns per cycle        
+           232 095      cache-references          #   52,151 M/sec                  
+            78 963      cache-misses              #   34,022 % of all cache refs    
+
+       0,021609872 seconds time elapsed
+

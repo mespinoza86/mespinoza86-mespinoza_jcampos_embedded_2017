@@ -1,0 +1,43 @@
+ Performance counter stats for './main':
+
+          0,266981      task-clock (msec)         #    0,024 CPUs utilized          
+           630 722      cycles                    #    2,362 GHz                    
+           423 164      instructions              #    0,67  insns per cycle        
+            22 265      cache-references          #   83,395 M/sec                  
+            10 477      cache-misses              #   47,056 % of all cache refs    
+
+       0,010909664 seconds time elapsed
+
+
+ Performance counter stats for './main':
+
+          0,201558      task-clock (msec)         #    0,452 CPUs utilized          
+           595 425      cycles                    #    2,954 GHz                    
+           420 416      instructions              #    0,71  insns per cycle        
+            22 047      cache-references          #  109,383 M/sec                  
+             5 813      cache-misses              #   26,366 % of all cache refs    
+
+       0,000446148 seconds time elapsed
+
+
+ Performance counter stats for './main':
+
+          0,191995      task-clock (msec)         #    0,493 CPUs utilized          
+           529 091      cycles                    #    2,756 GHz                    
+           426 025      instructions              #    0,81  insns per cycle        
+            23 513      cache-references          #  122,467 M/sec                  
+             2 800      cache-misses              #   11,908 % of all cache refs    
+
+       0,000389762 seconds time elapsed
+
+
+ Performance counter stats for './main':
+
+          0,222536      task-clock (msec)         #    0,456 CPUs utilized          
+           517 475      cycles                    #    2,325 GHz                    
+           425 037      instructions              #    0,82  insns per cycle        
+            21 689      cache-references          #   97,463 M/sec                  
+             1 907      cache-misses              #    8,792 % of all cache refs    
+
+       0,000487926 seconds time elapsed
+
